@@ -4,24 +4,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Авторизація</title>
+    <title>Реєстрація</title>
 </head>
 <body>
 <div id="login-box">
     <div class="left">
-        <h1>Увійти</h1>
-        <form id='authenticationform'>
-            <p class="errormessage" hidden id='dataerror'></p>
+        <h1>Зареєструватися</h1>
+        <form id="registration">
+            <input type="text" name="username" placeholder="Ім'я"/>
+            <p class='errormessage' id='emailerror' hidden></p>
             <input type="text" name="email" placeholder="Пошта"/>
-            <p class="errormessage" hidden id="passworderror"></p>
+            <p class='errormessage' id='passworderror' hidden></p>
             <input type="password" name="password" placeholder="Пароль"/>
             <input type="password" name="re_password" placeholder="Повторити пароль"/>
         </form>
-        <input type="submit" name="signup_submit" onclick="post_request_to_authenticate_user()" value="Увійти"/>
-        <br>
-        <a href="/auth/reset" class="forgot">Забули пароль?</a>
+        <input type="submit" onclick="post_request_to_create_user()" name="signup_submit" value="Зареєструватися"/>
         <hr>
-        <a href="/register" class="">Ще не зареєстровані?</a>
+        <a href="/auth" class="">Увійти в аккаунт</a>
     </div>
 
     <div class="right">
@@ -32,6 +31,6 @@
     </div>
     <div class="or">Або</div>
 </div>
-<script src="{% static '/authentication/js/authentication.js' %}"></script>
+<script src="{% static 'register/js/registration.js' %}"></script>
 </body>
 </html>

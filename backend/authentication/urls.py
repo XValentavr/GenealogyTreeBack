@@ -1,9 +1,10 @@
 from django.urls import path, include
-from django.views.generic import TemplateView
+from .views import RegisterView, ResetPassword
 
 urlpatterns = [
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.jwt')),
-    path('', TemplateView.as_view(template_name='authentication/base.html')),
+    path('', RegisterView.as_view()),
+    path('reset/', ResetPassword.as_view())
 
 ]
