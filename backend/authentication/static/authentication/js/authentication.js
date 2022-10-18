@@ -17,7 +17,7 @@ function get_data_from_authentication_form() {
 }
 
 async function post_request_to_authenticate_user() {
-    const myresponse = await fetch('http://localhost:8000/auth/api/v1/jwt/create/', {
+    const myresponse = await fetch('http://localhost:8000/auth/api/v1/token/login/', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -26,6 +26,7 @@ async function post_request_to_authenticate_user() {
         body: JSON.stringify(get_data_from_authentication_form())
     });
     const result = myresponse.status;
+    alert(myresponse.json())
     if (result === 200) {
         window.location.href = 'http://localhost:8000/'
     } else if (result === 401) {
