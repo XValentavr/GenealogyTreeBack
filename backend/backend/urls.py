@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include, re_path
-from django.views.generic import TemplateView
 
 from authentication.views import SetNewPassword
 
@@ -26,7 +25,6 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('register/', include('register.urls')),
     path('logout/', LogoutView.as_view()),
-    re_path(r'users/activate/.*', TemplateView.as_view(template_name='authentication/confirmation.html')),
     re_path('password/.*', SetNewPassword.as_view()),
 
 ]
