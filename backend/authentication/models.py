@@ -1,5 +1,7 @@
+import uuid
+
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager, UserManager
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
 
 
 class UserAccountManager(UserManager):
@@ -11,6 +13,9 @@ class UserAccountManager(UserManager):
         user = self.model(email=email, username=username)
         user.set_password(password)
         user.save()
+        from userprofile.models import UserProfile
+        userprofile = UserProfile(user=user, user_id=user.pk)
+        userprofile.save()
         return user
 
     def create_superuser(self, username, email=None, password=None, **extra_fields):
@@ -30,7 +35,7 @@ class UserAccount(AbstractUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-
+    uid = models.UUIDField(default=uuid.uuid1())
     objects = UserAccountManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
