@@ -10,7 +10,7 @@ class Deal(admin.ModelAdmin):
     list_display = ['id', 'client', 'date', 'document', 'context', 'genealog', 'is_published']
     list_display_links = ('id',)
     search_fields = ('client',)
-    list_editable = ('date', 'document', 'context', 'genealog', 'is_published','client', )
+    list_editable = ('date', 'document', 'context', 'genealog', 'is_published', 'client',)
 
     @staticmethod
     def client(obj):
