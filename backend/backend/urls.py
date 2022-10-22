@@ -28,6 +28,7 @@ urlpatterns = [
     path('register/', include('register.urls')),
     path('logout/', LogoutView.as_view()),
     path('profile/<uuid>/', include('userprofile.urls')),
+    path('deal/<uuid>/', include('deal.urls')),
 
     re_path('password/.*', SetNewPassword.as_view()),
 

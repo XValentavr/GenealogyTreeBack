@@ -42,3 +42,8 @@ class UserAccount(AbstractUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    class Meta:
+        verbose_name = 'Пользователи'
+        verbose_name_plural = 'Пользователи'
+        ordering = ['id']

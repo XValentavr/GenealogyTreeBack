@@ -18,3 +18,11 @@ class UserProfile(models.Model):
     whatsapp = models.URLField(default=None, null=True)
     twitter = models.URLField(default=None, null=True)
     linkedin = models.URLField(default=None, null=True)
+
+    def __str__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Профиль пользователя'
+        verbose_name_plural = 'Профиль пользователя'
+        ordering = ['id']
