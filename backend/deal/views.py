@@ -5,6 +5,7 @@ from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
+
 from deal.models import DealWithClient
 from userprofile.models import UserProfile
 from deal.serializers import DealSerializers
@@ -20,7 +21,7 @@ class DealClientView(APIView):
     @staticmethod
     def get(request, uuid):
         """
-        this function creates GET request to get info abount user profile
+        this function creates GET request to get info about user profile
         :param request: all request data (body, headers)
         :param uuid: user unique identifier
         :return: json object from got data

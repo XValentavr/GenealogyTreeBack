@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include, re_path
 
-from authentication.views import SetNewPassword
+from authentication.views import SetNewPassword, GetUserUUIDToChangeDeal
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('register/', include('register.urls')),
     path('logout/', LogoutView.as_view()),
     path('profile/<uuid>/', include('userprofile.urls')),
+    path('deal/api/v1/uuid/', GetUserUUIDToChangeDeal.as_view()),
     path('deal/<uuid>/', include('deal.urls')),
 
     re_path('password/.*', SetNewPassword.as_view()),
