@@ -33,7 +33,7 @@ class DealClientView(APIView):
         return Response('Nothing to show', status=HTTP_200_OK)
 
     @staticmethod
-    def put(request, uuid):
+    def post(request, uuid):
         """
         Create new deal
         :param request: all request data (body, headers)
@@ -41,8 +41,6 @@ class DealClientView(APIView):
         :return: json object from got data
         """
         json = request.data
-        if json['document'] is None:
-            json['document'] = ''
         deal = DealWithClient(client_id=UserProfile.objects.select_related('user').filter(user__uid=uuid).first().id,
                               date=json['date'],
                               document=json['document'], context=json['context'], is_published=json['is_published'],
@@ -71,18 +69,15 @@ class DealClientChangeView(APIView):
             client = UserProfile.objects.select_related('user').filter(user__uid=uuid).first()
             deal = DealWithClient.objects.filter(client_id=client.id, unique=unique).first()
             json = request.data
-            if json['date'] != '':
-                deal.date = json['date']
-            if json['document'] != '':
-                deal.document = json['document']
-            if json['context'] != '':
-                deal.context = json['context']
-            if json['genealog'] != '':
-                deal.genealog = json['genealog']
+            deal.date = json['date']
+            deal.document = json['document']
+            deal.context = json['context']
+            deal.genealog = json['genealog']
             deal.save()
             return Response("It's OK.", status=HTTP_200_OK)
         except  ValidationError:
             return Response('Deal not found.', status=500)
+
 
     @staticmethod
     def delete(request, uuid, unique):

@@ -31,22 +31,14 @@ class UserOperation(APIView):
         profile = UserProfile.objects.filter(user__uid=uuid).first()
         user = UserAccount.objects.filter(uid=uuid).first()
         json = request.data
-        if json['username'] != '':
-            user.username = json['username']
-        if json['lastname'] != '':
-            user.lastname = json['last_name']
-        if json['avatar'] != '':
-            profile.avatar = json['avatar']
-        if json['telegram'] != '':
-            profile.telegram = json['telegram']
-        if json['facebook'] != '':
-            profile.facebook = json['facebook']
-        if json['linkedin'] != '':
-            profile.whatsapp = json['whatsapp']
-        if json['linkedin'] != '':
-            profile.linkedin = json['linkedin']
-        if json['date_of_birth'] != '':
-            profile.date_of_birth = json['date_of_birth']
+        user.username = json['username']
+        user.lastname = json['last_name']
+        profile.avatar = json['avatar']
+        profile.telegram = json['telegram']
+        profile.facebook = json['facebook']
+        profile.whatsapp = json['whatsapp']
+        profile.linkedin = json['linkedin']
+        profile.date_of_birth = json['date_of_birth']
 
         profile.save()
         user.save()
