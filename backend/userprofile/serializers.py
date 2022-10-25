@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from authentication.models import UserAccount
 from userprofile.models import UserProfile
 
 
@@ -23,3 +24,23 @@ class UserSerizalier(serializers.ModelSerializer):
                   'whatsapp',
                   'twitter',
                   'photo_url')
+
+
+class PartialUpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAccount
+        fields = ('username',
+                  'email')
+
+
+class PartialUpdateUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('date_of_birth',
+                  'avatar',
+                  'telegram',
+                  'facebook',
+                  'linkedin',
+                  'whatsapp',
+                  'twitter',
+                  'avatar')

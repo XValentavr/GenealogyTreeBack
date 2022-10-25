@@ -5,7 +5,7 @@ from rest_framework import authentication, permissions
 
 from authentication.models import UserAccount
 from userprofile.models import UserProfile
-from .serializers import UserSerizalier
+from .serializers import UserSerizalier, PartialUpdateUserSerializer, PartialUpdateUserProfileSerializer
 
 
 # Create your views here.
@@ -28,18 +28,19 @@ class UserOperation(APIView):
 
     @staticmethod
     def patch(request, uuid):
-        profile = UserProfile.objects.filter(user__uid=uuid).first()
-        user = UserAccount.objects.filter(uid=uuid).first()
-        json = request.data
-        user.username = json['username']
-        user.lastname = json['last_name']
-        profile.avatar = json['avatar']
-        profile.telegram = json['telegram']
-        profile.facebook = json['facebook']
-        profile.whatsapp = json['whatsapp']
-        profile.linkedin = json['linkedin']
-        profile.date_of_birth = json['date_of_birth']
-
-        profile.save()
-        user.save()
-        return Response("It's OK.", status=HTTP_200_OK)
+        """
+        This function represents patch request
+        :param request: all data in request
+        :param uuid: unique user udentifier
+        :return: Response
+        """
+        # can be updated
+        user = PartialUpdateUserSerializer(UserAccount.objects.filter(uid=uuid).first(), data=request.data,
+                                           partial=True)
+        profile = PartialUpdateUserProfileSerializer(UserProfile.objects.filter(user__uid=uuid).first(),
+                                                     data=request.data, partial=True)
+        if user.is_valid(raise_exception=True) and profile.is_valid(raise_exception=True):
+            user.save()
+            profile.save()
+            return Response("It's OK.", status=201)
+        return Response(status=500)

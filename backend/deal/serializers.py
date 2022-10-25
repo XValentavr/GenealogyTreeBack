@@ -14,5 +14,23 @@ class DealSerializers(serializers.ModelSerializer):
         fields = ('date',
                   'document',
                   'context',
-                  'genealog'
+                  'genealog',
                   'unique')
+
+
+class CreateDealSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DealWithClient
+        fields = ('client', 'date',
+                  'document',
+                  'context', 'is_published',
+                  'genealog')
+
+
+class UpdatePartialDealSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DealWithClient
+        fields = ('date',
+                  'document',
+                  'context', 'is_published',
+                  'genealog')
