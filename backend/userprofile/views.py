@@ -39,7 +39,7 @@ class UserOperation(APIView):
                                            partial=True)
         profile = PartialUpdateUserProfileSerializer(UserProfile.objects.filter(user__uid=uuid).first(),
                                                      data=request.data, partial=True)
-        if user.is_valid(raise_exception=True) and profile.is_valid(raise_exception=True):
+        if user.is_valid() and profile.is_valid():
             user.save()
             profile.save()
             return Response("It's OK.", status=201)

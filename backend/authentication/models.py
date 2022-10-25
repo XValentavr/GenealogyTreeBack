@@ -13,9 +13,14 @@ class UserAccountManager(UserManager):
         user = self.model(email=email, username=username)
         user.set_password(password)
         user.save()
+
         from userprofile.models import UserProfile
         userprofile = UserProfile(user=user, user_id=user.pk)
         userprofile.save()
+
+        from tree.models import MainRootUser
+        root_user = MainRootUser(user=user, user_id=user.pk)
+        root_user.save()
         return user
 
     def create_superuser(self, username, email=None, password=None, **extra_fields):
