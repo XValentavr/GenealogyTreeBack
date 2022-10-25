@@ -1,6 +1,7 @@
 from django.db import models
 
 from authentication.models import UserAccount
+from backend.settings import MEDIA_ROOT
 
 
 class UserProfile(models.Model):
@@ -9,7 +10,8 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     date_of_birth = models.DateField(default=None, null=True)
-    avatar = models.ImageField(upload_to=f'photos/{UserAccount.uid}/',blank=True, null=True)
+    avatar = models.ImageField(upload_to=f'photos/{UserAccount.uid}/',
+                               default=MEDIA_ROOT + '/userprofile/photos/default.jpg', blank=True, null=True)
 
     telegram = models.URLField(default=None, null=True)
     facebook = models.URLField(default=None, null=True)

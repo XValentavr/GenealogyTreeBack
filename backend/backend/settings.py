@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'homepage.apps.HomepageConfig',
     'register.apps.RegisterConfig',
     'userprofile.apps.UserprofileConfig',
-    'deal.apps.DealConfig'
+    'deal.apps.DealConfig',
+    'tree.apps.TreeConfig'
 ]
 
 MIDDLEWARE = [

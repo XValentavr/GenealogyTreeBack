@@ -16,7 +16,6 @@ class UserSerizalier(serializers.ModelSerializer):
         model = UserProfile
         fields = ('user_name',
                   'lastname',
-                  'date_of_birth',
                   'avatar',
                   'telegram',
                   'facebook',
@@ -36,8 +35,7 @@ class PartialUpdateUserSerializer(serializers.ModelSerializer):
 class PartialUpdateUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('date_of_birth',
-                  'avatar',
+        fields = ('avatar',
                   'telegram',
                   'facebook',
                   'linkedin',
