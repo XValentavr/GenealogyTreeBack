@@ -23,6 +23,6 @@ class UserProfile(models.Model):
         return self.user.email
 
     class Meta:
-        verbose_name = 'Профиль пользователя'
-        verbose_name_plural = 'Профиль пользователя'
+        verbose_name = 'Профіль користувачів'
+        verbose_name_plural = 'Профіль користувачів'
         ordering = ['id']

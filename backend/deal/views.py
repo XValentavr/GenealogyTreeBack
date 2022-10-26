@@ -24,11 +24,12 @@ class DealClientView(APIView):
         :param uuid: user unique identifier
         :return: json object from got data
         """
-        client = DealWithClient.objects.select_related('client').filter(client__user__uid=uuid)
+        client = DealWithClient.objects.select_related('client').filter(client__user__uid=uuid,
+                                                                        is_published=request.data['is_published'])
         serializer = DealSerializers(client, many=True, context={"request": request})
         if serializer:
             return Response(serializer.data, status=HTTP_200_OK)
-        return Response('Nothing to show', status=HTTP_200_OK)
+        return Response('Nothing to show', status=404)
 
     @staticmethod
     def post(request, uuid):

@@ -23,6 +23,6 @@ class DealWithClient(models.Model):
         return self.client.user.email
 
     class Meta:
-        verbose_name = 'Сделки'
-        verbose_name_plural = 'Сделки'
+        verbose_name = 'Угоди'
+        verbose_name_plural = 'Угоди'
         ordering = ['id']

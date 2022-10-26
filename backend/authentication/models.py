@@ -14,13 +14,7 @@ class UserAccountManager(UserManager):
         user.set_password(password)
         user.save()
 
-        from userprofile.models import UserProfile
-        userprofile = UserProfile(user=user, user_id=user.pk)
-        userprofile.save()
-
-        from tree.models import MainRootUser
-        root_user = MainRootUser(user=user, user_id=user.pk)
-        root_user.save()
+        create_user_profile(user=user)
         return user
 
     def create_superuser(self, username, email=None, password=None, **extra_fields):
@@ -31,6 +25,9 @@ class UserAccountManager(UserManager):
         user = self.model(email=email, username=username, is_staff=True, is_active=True, is_superuser=True)
         user.set_password(password)
         user.save()
+
+        create_user_profile(user=user)
+
         return user
 
 
@@ -49,6 +46,19 @@ class UserAccount(AbstractUser, PermissionsMixin):
         return self.email
 
     class Meta:
-        verbose_name = 'Пользователи'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = 'Користувачі'
+        verbose_name_plural = 'Користувачі'
         ordering = ['id']
+
+
+def create_user_profile(user):
+    """
+    Function creates user account
+    """
+    from userprofile.models import UserProfile
+    userprofile = UserProfile(user=user, user_id=user.pk)
+    userprofile.save()
+
+    from tree.models import MainRootUser
+    root_user = MainRootUser(user=user, user_id=user.pk)
+    root_user.save()

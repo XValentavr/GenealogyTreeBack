@@ -8,19 +8,6 @@ from rest_framework.views import APIView
 from authentication.models import UserAccount
 
 
-# Create your views here.
-
-class RegisterView(TemplateView):
-    template_name = 'authentication/base.html'
-
-
-class ResetPassword(TemplateView):
-    template_name = 'authentication/reset_password.html'
-
-
-class SetNewPassword(TemplateView):
-    template_name = 'authentication/set_new_password.html'
-
 
 class GetUserAfterAuth(APIView):
     authentication_classes = [authentication.TokenAuthentication]

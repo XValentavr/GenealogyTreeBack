@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'userprofile.apps.UserprofileConfig',
     'deal.apps.DealConfig',
-    'tree.apps.TreeConfig'
+    'tree.apps.TreeConfig',
+    'support.apps.SupportConfig'
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(Path(BASE_DIR).parents[0], 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,7 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = os.path.join(Path(BASE_DIR).parents[0], 'frontend/build/static'),
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
