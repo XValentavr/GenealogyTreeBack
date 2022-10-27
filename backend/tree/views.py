@@ -1,10 +1,11 @@
 from rest_framework import authentication, permissions
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from authentication.models import UserAccount
 from tree.models import MainRootUser
-from tree.serializers import MainRootUserSerializer, PartialUpdateMainRootUserSerializer
+from tree.serializers import MainRootUserSerializer, PartialUpdateMainRootUserSerializer, InsertWifeToRootTreeSerializer
 from userprofile.serializers import PartialUpdateUserSerializer
 
 
@@ -47,3 +48,39 @@ class GetRootUserInfirmation(APIView):
             root_serialized.save()
             return Response("It's OK.", status=201)
         return Response('An error occured. Bad request', status=500)
+
+
+class InsertWifeToRootTree(CreateAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = InsertWifeToRootTreeSerializer
+
+    def create(self, request, *args, **kwargs):
+        request.data['spouse'] = MainRootUser.objects.filter(user__uid=kwargs['uuid']).first().pk
+
+        if 'email' in request.data:
+            user = UserAccount.objects.filter(email=request.data['email']).first().pk
+            if not user:
+                user = ''
+            request.data['user'] = user
+
+        super().create(request, *args, **kwargs)
+        return Response(status=200)
+
+
+class InsertSpouseToRootTree(CreateAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = InsertWifeToRootTreeSerializer
+
+    def create(self, request, *args, **kwargs):
+        request.data['wife'] = MainRootUser.objects.filter(user__uid=kwargs['uuid']).first().pk
+
+        if 'email' in request.data:
+            user = UserAccount.objects.filter(email=request.data['email']).first().pk
+            if not user:
+                user = ''
+            request.data['user'] = user
+
+        super().create(request, *args, **kwargs)
+        return Response(status=200)

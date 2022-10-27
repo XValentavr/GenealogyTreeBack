@@ -7,4 +7,10 @@ User = get_user_model()
 class UserCreateMySerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ('id', 'email', 'name', 'password')
+        fields = ('id', 'email', 'name', 'password', 'sex')
+
+
+class GetUserUUIDToChangeDealSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ('uid',)

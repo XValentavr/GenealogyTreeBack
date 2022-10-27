@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from rest_framework import authentication, permissions
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
@@ -11,35 +12,19 @@ from deal.serializers import DealSerializers, CreateDealSerializer, UpdatePartia
 
 # Create your views here.
 
-
-class DealClientView(APIView):
+class DealClientView(ListCreateAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    @staticmethod
-    def get(request, uuid):
-        """
-        this function creates GET request to get info about user profile
-        :param request: all request data (body, headers)
-        :param uuid: user unique identifier
-        :return: json object from got data
-        """
-        client = DealWithClient.objects.select_related('client').filter(client__user__uid=uuid,
+    def list(self, request, *args, **kwargs):
+        client = DealWithClient.objects.select_related('client').filter(client__user__uid=kwargs['uuid'],
                                                                         is_published=request.data['is_published'])
-        serializer = DealSerializers(client, many=True, context={"request": request})
-        if serializer:
-            return Response(serializer.data, status=HTTP_200_OK)
-        return Response('Nothing to show', status=404)
+        serialized = DealSerializers(client, many=True)
+        return Response(serialized.data)
 
-    @staticmethod
-    def post(request, uuid):
-        """
-        Create new deal
-        :param request: all request data (body, headers)
-        :param uuid: user unique udentifier
-        :return: json object from got data
-        """
-        request.data['client'] = UserProfile.objects.select_related('user').filter(user__uid=uuid).first().id
+    def create(self, request, *args, **kwargs):
+        self.request.data['client'] = UserProfile.objects.select_related('user').filter(
+            user__uid=kwargs['uuid']).first().id
         deal = CreateDealSerializer(data=request.data)
         if deal.is_valid():
             deal.save()

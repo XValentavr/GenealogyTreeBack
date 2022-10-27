@@ -39,6 +39,7 @@ class UserAccount(AbstractUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     uid = models.UUIDField(default=uuid.uuid1())
     objects = UserAccountManager()
+    sex = models.CharField(max_length=10, default=None, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 

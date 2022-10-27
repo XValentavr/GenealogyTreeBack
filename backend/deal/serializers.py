@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from deal.models import DealWithClient
+from tree.models import MainRootUserWife
 
 
 class DealSerializers(serializers.ModelSerializer):
@@ -34,3 +35,4 @@ class UpdatePartialDealSerializer(serializers.ModelSerializer):
                   'document',
                   'context', 'is_published',
                   'genealog')
+

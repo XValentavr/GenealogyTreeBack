@@ -33,7 +33,7 @@ class MainRootUserWife(models.Model):
     """
     This class creates database root user wife
     """
-    spouse = models.OneToOneField(MainRootUser, on_delete=models.CASCADE)
+    spouse = models.ForeignKey(MainRootUser, on_delete=models.CASCADE, unique=False)
     name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
     last_name = models.CharField(max_length=255, null=True)
@@ -45,13 +45,41 @@ class MainRootUserWife(models.Model):
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
     unique_root = models.UUIDField(default=uuid.uuid1())
+    email = models.EmailField(null=True)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'Дружина'
-        verbose_name_plural = 'Дружина'
+        ordering = ['id']
+
+
+class MainRootUserSpouse(models.Model):
+    """
+    This class creates database root user spouse
+    """
+    wife = models.ForeignKey(MainRootUser, on_delete=models.CASCADE, unique=False)
+    name = models.CharField(max_length=255, null=True)
+    surname = models.CharField(max_length=255, null=True)
+    last_name = models.CharField(max_length=255, null=True)
+    mother_surname = models.CharField(max_length=255, null=True)
+    date_of_birth = models.DateField(default=None, null=True)
+    place_of_birth = models.CharField(max_length=255, null=True)
+    date_of_marry = models.DateField(default=None, null=True)
+    is_dead = models.BooleanField(default=False)
+    date_of_death = models.DateField(default=None, null=True)
+    years = models.CharField(max_length=255, default=None, null=True)
+    unique_root = models.UUIDField(default=uuid.uuid1())
+    email = models.EmailField(null=True)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Чоловік'
         ordering = ['id']
 
 
