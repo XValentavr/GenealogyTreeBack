@@ -44,7 +44,7 @@ class MainRootUserWife(models.Model):
     is_dead = models.BooleanField(default=False)
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
-    unique_root = models.UUIDField(default=uuid.uuid1())
+    uuid = models.UUIDField(default=uuid.uuid1(), unique=True)
     email = models.EmailField(null=True)
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
 
@@ -71,7 +71,7 @@ class MainRootUserSpouse(models.Model):
     is_dead = models.BooleanField(default=False)
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
-    unique_root = models.UUIDField(default=uuid.uuid1())
+    uuid = models.UUIDField(default=uuid.uuid1(), unique=True)
     email = models.EmailField(null=True)
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
 

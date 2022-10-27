@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tree.models import MainRootUser, MainRootUserWife
+from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse
 
 
 class MainRootUserSerializer(serializers.ModelSerializer):
@@ -26,13 +26,25 @@ class PartialUpdateMainRootUserSerializer(serializers.ModelSerializer):
         )
 
 
-class InsertWifeToRootTreeSerializer(serializers.ModelSerializer):
+class GetWifeOrSpouseToRootTreeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MainRootUserWife
+        model = MainRootUserSpouse
         fields = (
-            "spouse", "name", "surname", "last_name",
+            "name", "surname", "last_name",
             "mother_surname",
             "date_of_birth", "place_of_birth",
             "date_of_marry", "is_dead", "date_of_death",
             "email", "user"
         )
+
+
+class InsertWifeOrSpouseToRootTreeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MainRootUserSpouse
+        fields = ("id", "wife",
+                  "name", "surname", "last_name",
+                  "mother_surname",
+                  "date_of_birth", "place_of_birth",
+                  "date_of_marry", "is_dead", "date_of_death",
+                  "email", "user"
+                  )
