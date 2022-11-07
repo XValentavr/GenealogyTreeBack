@@ -1,6 +1,6 @@
-.guarantee {
+.prev {
     display: block;
     width: 100%;
-    background-color: springgreen;
+    background-color: lightgrey;
     min-height: 100vh;
 }

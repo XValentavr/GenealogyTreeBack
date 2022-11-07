@@ -1,6 +1,6 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
@@ -12,10 +12,10 @@
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     display: block;
     margin: auto;
-    padding-top: 100px;
+    padding-top: 5%;
 }
 
 .content-section {
@@ -28,6 +28,7 @@
 .image-section {
     float: right;
     width: 40%;
+    background-color: aliceblue;
 }
 
 .image-section img {
@@ -52,7 +53,24 @@
     font-size: 18px;
     line-height: 1.5;
 }
+.inner-container {
+    width: 100%;
+    display: inline-block;
+    margin: auto;
+    padding-top: 5%;
 
+}
+.aboutUsImage{
+    border: dashed 5px hsla(0, 95%, 35%, 1);
+    border-radius: 15%;
+    float: left;
+    display: inline-block;
+    width: 20%;
+    background: springgreen;
+    padding-top: 100px;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
 
 @media screen and (max-width: 768px) {
     .container {
@@ -94,6 +112,16 @@
     .content-section .content .button a {
         padding: 9px 30px;
     }
-
+    .aboutUsImage{
+        border: dashed 5px hsla(0, 95%, 35%, 1);
+        border-radius: 15%;
+        float: left;
+        display: inline-block;
+        width: 48%;
+        background: springgreen;
+        padding-top: 100px;
+        margin-right: 2%;
+        margin-bottom: 2%;
+    }
 
 }

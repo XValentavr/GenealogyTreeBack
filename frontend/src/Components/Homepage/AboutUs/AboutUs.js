@@ -1,18 +1,31 @@
 import React from "react";
 import styles from './AboutUs.module.css'
-import AboutUsContent from "./AbounUsContent";
+import AboutUsContent from "./AboutUsContent";
 import AboutUsTitle from "./AboutUsTitle";
 import AboutUsImage from "./AboutUsImage";
+import Card from "../Card/Card";
+import AboutUsOurWorkers from "./AboutUsOurWorkers";
 
 const AboutUs = props => {
     return (
-        <section className={styles.section}>
+        <section id="AboutUs" className={styles.section}>
             <div className={styles.container}>
-                <div className={styles['content-section']}>
+                <Card setClass={styles['content-section']}>
                     <AboutUsTitle/>
                     <AboutUsContent/>
-                </div>
+                </Card>
                 <AboutUsImage/>
+                <div className={styles["inner-container"]}>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+                    <AboutUsOurWorkers/>
+
+                </div>
             </div>
         </section>
     );

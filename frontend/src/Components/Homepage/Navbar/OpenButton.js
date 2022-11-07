@@ -4,7 +4,7 @@ import styles from './Navbar.module.css'
 const OpenButton = props => {
     return (
         <div className={styles["menu-icon"]}>
-            {new Array(3).fill('').map(() => <div className={styles.bar}></div>)}
+            {new Array(3).fill('').map(() => <div key={Math.random().toString()} className={styles.bar}></div>)}
         </div>
     )
 };
