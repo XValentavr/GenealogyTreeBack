@@ -1,13 +1,10 @@
 import React from "react";
 import './App.css';
-import './Components/Homepage/Navbar/Navbar'
-import MainPage from "./Components/Homepage/MainPage/MainPage";
+import MainPage from "./components/MainPage/MainPage";
 
 function App() {
     return (
-        <div className="App">
             <MainPage/>
-        </div>
     );
 }
 
