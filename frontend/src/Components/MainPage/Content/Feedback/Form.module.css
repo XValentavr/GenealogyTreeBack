@@ -1,9 +1,3 @@
-.wrapper {
-    width: 100%;
-    height: 100%;
-    font-family: sans-serif;
-    background: linear-gradient(#141e30, #243b55);
-}
 
 .login-box {
     position: absolute;
@@ -39,6 +33,7 @@
     border-bottom: 1px solid #fff;
     outline: none;
     background: transparent;
+    cursor: pointer;
 }
 
 .login-box .user-box textarea:focus ~ label {
