@@ -5,7 +5,7 @@ const Button = props => {
     return (
         <Fragment>
             <label>{props.label}</label>
-            <button className={classes.created_button} type={props.type}>
+            <button className={classes.created_button} type={props.type} disabled={props.disabled}>
                 {props.buttonText}</button>
         </Fragment>
     );

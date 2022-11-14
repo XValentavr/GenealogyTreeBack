@@ -3,7 +3,7 @@ import classes from './Nav.module.css'
 
 const Nav = props => {
     const openFeedbackHandler = () => {
-        props.portalFeedbackHandler(!props.initialIsOpened)
+        props.openFeedbackHandler(!props.initialIsOpened)
     }
     return (
         <div className={classes.wrapper}>
