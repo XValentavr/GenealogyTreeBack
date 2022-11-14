@@ -19,7 +19,6 @@ from django.views.generic import TemplateView
 from .views import UserOperation
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='userprofile/base.html')),
     path('api/v1/fetch/', UserOperation.as_view()),
 
 ]

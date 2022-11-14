@@ -10,7 +10,7 @@ class UserCreateMySerializer(UserCreateSerializer):
         fields = ('id', 'email', 'name', 'password', 'sex')
 
 
-class GetUserUUIDToChangeDealSerializer(UserCreateSerializer):
+class GetUserUUID(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
         fields = ('uid',)
