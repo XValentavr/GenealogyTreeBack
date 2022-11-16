@@ -1,9 +1,9 @@
 import React from "react";
-const FormWrapper = props => {
+const FormCard = props => {
     return (
-            <div className={props.inner}>
+            <div className={props.innerClass}>
                 {props.children}
             </div>
     );
 }
-export default FormWrapper
+export default FormCard

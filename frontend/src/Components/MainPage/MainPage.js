@@ -1,26 +1,31 @@
-import React, {useContext, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import Nav from "./Content/Navbar/Nav";
 import AboutUs from "./Content/AboutUs/AboutUs";
 import Homepage from "./Content/Homepage/Homepage";
-import Form from "./Content/Feedback/Form";
-import FeedbackContext from "./store/feedback/feedback-context";
+import FeedbackOrAuthForm from "./Content/FeedbackOrAuth/FeedbackOrAuthForm";
+import FeedbackOrAuthContext from "./store/FeedbackOrAuth/feedbackOrAuth-context";
 
 const MainPage = props => {
 
-    const feedbackCtx = useContext(FeedbackContext)
+    const [formType, setFormType] = useState('')
 
-    const openFeedbackHandler = isOpened => feedbackCtx.closeFeedback(isOpened)
+    const setFormTypeHandler = formType => setFormType(formType)
 
+    const feedbackOrAuthCtx = useContext(FeedbackOrAuthContext)
+
+    const openFeedbackOrAuthHandler = isOpened => feedbackOrAuthCtx.closeFeedbackOrAuth(isOpened)
     return (
-        <React.Fragment>
-            <Nav openFeedbackHandler={openFeedbackHandler} initialIsOpened={feedbackCtx.isOpenFeedback}/>
-            {feedbackCtx.isOpenFeedback ? <Form/> :
+        <Fragment>
+            <Nav formType={setFormTypeHandler} openFeedbackOrAuthHandler={openFeedbackOrAuthHandler}
+                 initialIsOpened={feedbackOrAuthCtx.isOpenFeedbackOrAuth}/>
+            {feedbackOrAuthCtx.isOpenFeedbackOrAuth && formType === "feedback" ?
+                <FeedbackOrAuthForm formType={formType}/> :
                 <React.Fragment>
                     <Homepage/>
                     <AboutUs/>
                 </React.Fragment>
             }
-        </React.Fragment>
+        </Fragment>
     );
 }
 export default MainPage

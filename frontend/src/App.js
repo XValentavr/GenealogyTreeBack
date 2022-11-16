@@ -1,13 +1,12 @@
 import React from "react";
 import './App.css';
-import MainPage from "./components/MainPage/MainPage";
-import FeedbackProvider from "./components/MainPage/store/feedback/FeedbackProvider";
-
+import MainPage from "./Components/MainPage/MainPage";
+import FeedbackOrAuthProvider from "./Components/MainPage/store/FeedbackOrAuth/FeedbackOrAuthProvider";
 function App() {
     return (
-        <FeedbackProvider>
-            <MainPage/>
-        </FeedbackProvider>
+        <FeedbackOrAuthProvider>
+                <MainPage/>
+        </FeedbackOrAuthProvider>
     );
 }
 
