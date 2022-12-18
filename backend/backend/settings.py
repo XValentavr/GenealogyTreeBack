@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os.path
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv('../.env.dev')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -22,7 +23,8 @@ SECRET_KEY = 'django-insecure-zuqs-^@+7hn=t++y4$s2b5m4l^(!4obmw*4=(wyq2nlw2r$38#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -34,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djoser',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'authentication.apps.AuthenticationConfig',
@@ -42,7 +45,8 @@ INSTALLED_APPS = [
     'userprofile.apps.UserprofileConfig',
     'deal.apps.DealConfig',
     'tree.apps.TreeConfig',
-    'support.apps.SupportConfig'
+    'support.apps.SupportConfig',
+    'documents.apps.DocumentsConfig'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -60,7 +65,6 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(Path(BASE_DIR).parents[0], 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,12 +84,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'FamilyTree',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': "familytree",
+        'USER': "postgres",
+        'PASSWORD': "admin",
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '5433'
     }
 }
 
@@ -122,7 +126,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = os.path.join(Path(BASE_DIR).parents[0], 'frontend/build/static'),
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -133,8 +136,8 @@ AUTH_USER_MODEL = 'authentication.UserAccount'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'iwilly17@gmail.com'
-EMAIL_HOST_PASSWORD = 'trvwniedgtothiuw'
+EMAIL_HOST_USER = "iwilly17@gmail.com"
+EMAIL_HOST_PASSWORD = "trvwniedgtothiuw"
 EMAIL_USE_TLS = True
 
 SIMPLE_JWT = {
