@@ -13,7 +13,7 @@ from tree.special_functions import add_new_params_to_request
 from userprofile.serializers import PartialUpdateUserSerializer
 
 
-class GetRootUserInfirmation(APIView):
+class GetRootUserInformation(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAdminUser]
 

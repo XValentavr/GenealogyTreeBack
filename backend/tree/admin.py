@@ -12,7 +12,7 @@ class MainRootUserAdmin(admin.ModelAdmin):
     model = MainRootUser
     list_display = (
         'id', 'get_first_name', 'get_lastname', 'surname', 'mother_surname', 'date_of_birth', 'place_of_birth',
-        'date_of_marry', 'unique_root')
+        'date_of_marry',)
 
     list_display_links = ('id',)
 
@@ -22,7 +22,7 @@ class MainRootUserAdmin(admin.ModelAdmin):
                      'date_of_birth', 'place_of_birth',
                      'date_of_marry',)
 
-    readonly_fields = ('unique_root',)
+    readonly_fields = ('id',)
 
     @staticmethod
     def get_first_name(obj):
@@ -41,7 +41,7 @@ class FemaleLineAdmin(admin.ModelAdmin):
     model = FemaleLine
     list_display = (
         'id', 'root', 'first_name', 'surname', 'last_name', 'mother_surname', 'date_of_birth', 'place_of_birth',
-        'date_of_marry', 'date_of_marry', 'date_of_death', 'document', 'is_published', 'unique_female')
+        'date_of_marry', 'date_of_marry', 'date_of_death', 'document', 'is_published')
 
     list_display_links = ('id',)
 
@@ -50,7 +50,7 @@ class FemaleLineAdmin(admin.ModelAdmin):
     list_editable = ('first_name', 'surname', 'last_name', 'mother_surname', 'date_of_birth', 'place_of_birth',
                      'date_of_marry', 'date_of_marry', 'date_of_death', 'document', 'is_published',)
 
-    readonly_fields = ('unique_female',)
+    readonly_fields = ('id',)
 
 
 @admin.register(MaleLine)
@@ -61,7 +61,7 @@ class MaleLineAdmin(admin.ModelAdmin):
     model = MaleLine
     list_display = (
         'id', 'root', 'first_name', 'surname', 'last_name', 'mother_surname', 'date_of_birth', 'place_of_birth',
-        'date_of_marry', 'date_of_marry', 'date_of_death', 'document', 'is_published', 'unique_male')
+        'date_of_marry', 'date_of_marry', 'date_of_death', 'document', 'is_published')
 
     list_display_links = ('id',)
 
@@ -70,4 +70,4 @@ class MaleLineAdmin(admin.ModelAdmin):
     list_editable = ('first_name', 'surname', 'last_name', 'mother_surname', 'date_of_birth', 'place_of_birth',
                      'date_of_marry', 'date_of_marry', 'date_of_death', 'document', 'is_published',)
 
-    readonly_fields = ('unique_male',)
+    readonly_fields = ('id',)

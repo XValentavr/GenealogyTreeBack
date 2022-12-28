@@ -10,6 +10,7 @@ class MainRootUser(models.Model):
     """
     This class creates database root user
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     surname = models.CharField(max_length=255, null=True)
     mother_surname = models.CharField(max_length=255, null=True)
@@ -19,7 +20,6 @@ class MainRootUser(models.Model):
     is_dead = models.BooleanField(default=False)
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
-    unique_root = models.UUIDField(default=uuid.uuid1())
 
     def __str__(self):
         return self.user.first_name
@@ -34,6 +34,7 @@ class MainRootUserWife(models.Model):
     """
     This class creates database root user wife
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     spouse = models.ForeignKey(MainRootUser, on_delete=models.CASCADE, unique=False)
     name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
@@ -45,7 +46,6 @@ class MainRootUserWife(models.Model):
     is_dead = models.BooleanField(default=False)
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
-    uuid = models.UUIDField(default=uuid.uuid1(), unique=True)
     email = models.EmailField(null=True)
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
     sex = models.CharField(max_length=10, null=False, default='М')
@@ -62,6 +62,7 @@ class MainRootUserSpouse(models.Model):
     """
     This class creates database root user spouse
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     wife = models.ForeignKey(MainRootUser, on_delete=models.CASCADE, unique=False)
     name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
@@ -73,7 +74,6 @@ class MainRootUserSpouse(models.Model):
     is_dead = models.BooleanField(default=False)
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
-    uuid = models.UUIDField(default=uuid.uuid1(), unique=True)
     email = models.EmailField(null=True)
     sex = models.CharField(max_length=10, null=False, default='М')
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
@@ -90,6 +90,7 @@ class FemaleLine(models.Model):
     """
     Resresents female line
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
@@ -101,7 +102,6 @@ class FemaleLine(models.Model):
     date_of_death = models.DateField(default=None, null=True)
     document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
     is_published = models.BooleanField(default=False)
-    unique_female = models.UUIDField(default=uuid.uuid1())
     sex = models.CharField(max_length=10, null=False, default='Ж')
     prev_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
@@ -117,6 +117,7 @@ class MaleLine(models.Model):
     """
     represent male line
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
@@ -128,7 +129,6 @@ class MaleLine(models.Model):
     date_of_death = models.DateField(default=None, null=True)
     document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
     is_published = models.BooleanField(default=False)
-    unique_male = models.UUIDField(default=uuid.uuid1())
     sex = models.CharField(max_length=10, null=False, default='М')
     prev_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
@@ -144,6 +144,7 @@ class FemaleLineChild(models.Model):
     """
     represent female line child
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
@@ -155,7 +156,6 @@ class FemaleLineChild(models.Model):
     date_of_death = models.DateField(default=None, null=True)
     document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
     is_published = models.BooleanField(default=False)
-    unique_female = models.UUIDField(default=uuid.uuid1())
     sex = models.CharField(max_length=10, null=False, default='М')
     next_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
@@ -171,6 +171,7 @@ class MaleLineChild(models.Model):
     """
     represent male line chile
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, null=True)
     surname = models.CharField(max_length=255, null=True)
@@ -182,7 +183,6 @@ class MaleLineChild(models.Model):
     date_of_death = models.DateField(default=None, null=True)
     document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
     is_published = models.BooleanField(default=False)
-    unique_male_child = models.UUIDField(default=uuid.uuid1())
     sex = models.CharField(max_length=10, null=False, default='Ж')
     next_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 

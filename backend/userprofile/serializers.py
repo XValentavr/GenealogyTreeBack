@@ -4,33 +4,41 @@ from authentication.models import UserAccount
 from userprofile.models import UserProfile
 
 
-class UserSerizalier(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """
     This class creates json object from user profile table from database
     """
-    photo_url = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
-    user_name = serializers.CharField(source='user.username')
-    lastname = serializers.CharField(source='user.last_name')
+    photoUrl = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+    userName = serializers.CharField(source='user.username')
+    lastName = serializers.CharField(source='user.last_name')
+    email = serializers.CharField(source='user.email')
+    sex = serializers.CharField(source='user.sex')
+    isGenealogist = serializers.BooleanField(source='user.is_genealogist')
+    isSuperuser = serializers.BooleanField(source='user.is_superuser')
 
     class Meta:
         model = UserProfile
-        fields = ('user_name',
-                  'lastname',
+        fields = ('userName',
+                  'lastName',
                   'avatar',
                   'telegram',
                   'facebook',
                   'linkedin',
                   'whatsapp',
                   'twitter',
-                  'photo_url')
+                  'photoUrl',
+                  'email',
+                  'sex',
+                  'isGenealogist',
+                  'isSuperuser',)
 
 
 class PartialUpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ('username',
-                  'last_name',
-                  'first_name',
+        fields = ('userName',
+                  'lastName',
+                  'firstName',
                   'email')
 
 

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from authentication.models import UserAccount
@@ -8,9 +10,10 @@ class UserProfile(models.Model):
     """"
     Class that describes user profile model in database
     """
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    user = models.OneToOneField(UserAccount, related_name='user', on_delete=models.CASCADE)
     date_of_birth = models.DateField(default=None, null=True)
-    avatar = models.ImageField(upload_to=f'photos/{UserAccount.uid}/',
+    avatar = models.ImageField(upload_to=f'photos/{UserAccount.id}/',
                                default=MEDIA_ROOT + '/userprofile/photos/default.jpg', blank=True, null=True)
 
     telegram = models.URLField(default=None, null=True)

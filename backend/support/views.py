@@ -10,8 +10,7 @@ from support.serializer import TechSupportSerializer
 
 
 class CreateTechSupportMessage(CreateAPIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     serializer_class = TechSupportSerializer
 
     def create(self, request, *args, **kwargs):
@@ -19,6 +18,7 @@ class CreateTechSupportMessage(CreateAPIView):
         send_mail(subject='Питання з генеологічного сайту',
                   message=self.request.data['context'] + '\n\n' +
                           self.request.data['phone'] + '\n\n\n' +
+                          self.request.data['name'] + '\n' +
                           self.request.data['date'],
                   from_email=self.request.data['email'],
                   recipient_list=['iwilly17@gmail.com'],

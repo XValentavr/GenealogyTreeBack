@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from deal.models import DealWithClient
-from tree.models import MainRootUserWife
 
 
 class DealSerializers(serializers.ModelSerializer):
@@ -15,7 +14,7 @@ class DealSerializers(serializers.ModelSerializer):
         fields = ('date',
                   'document',
                   'context',
-                  'genealog',
+                  'genealogist',
                   'unique')
 
 
@@ -25,7 +24,7 @@ class CreateDealSerializer(serializers.ModelSerializer):
         fields = ('client', 'date',
                   'document',
                   'context', 'is_published',
-                  'genealog')
+                  'genealogist')
 
 
 class UpdatePartialDealSerializer(serializers.ModelSerializer):
@@ -34,5 +33,5 @@ class UpdatePartialDealSerializer(serializers.ModelSerializer):
         fields = ('date',
                   'document',
                   'context', 'is_published',
-                  'genealog')
+                  'genealogist')
 

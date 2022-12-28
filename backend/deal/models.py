@@ -11,16 +11,18 @@ class DealWithClient(models.Model):
     """
     Creates table of info abount user and deal
     """
-    client = models.ForeignKey(UserProfile, on_delete=models.CASCADE, unique=False, related_name='client')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    clientTree = models.ForeignKey(UserProfile, default=None, on_delete=models.CASCADE, unique=False,
+                                   related_name='clientTree')
     date = models.DateField(null=True)
-    document = models.ImageField(upload_to=f'photos/{UserAccount.uid}/', blank=True, null=True)
+    document = models.ImageField(upload_to=f'photos/{UserAccount.id}/', blank=True, null=True)
     context = models.TextField(null=True)
     is_published = models.BooleanField(default=False)
-    genealog = models.CharField(max_length=255, null=True)
-    unique = models.UUIDField(default=uuid.uuid1(), auto_created=uuid.uuid1())
+    genealogistTree = models.ForeignKey(UserProfile, default=None, on_delete=models.CASCADE, null=True, unique=False,
+                                        related_name='genealogistTree')
 
     def __str__(self):
-        return self.client.user.email
+        return self.clientTree.user.email
 
     class Meta:
         verbose_name = 'Угоди'

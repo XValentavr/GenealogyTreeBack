@@ -5,7 +5,7 @@ from rest_framework import authentication, permissions
 
 from authentication.models import UserAccount
 from userprofile.models import UserProfile
-from .serializers import UserSerizalier, PartialUpdateUserSerializer, PartialUpdateUserProfileSerializer
+from .serializers import PartialUpdateUserSerializer, PartialUpdateUserProfileSerializer, UserSerializer
 
 
 # Create your views here.
@@ -17,13 +17,13 @@ class UserOperation(APIView):
     @staticmethod
     def get(request, uuid):
         """
-        this function creates GET request to get info abount user profile
+        this function creates GET request to get info about user profile
         :param request: all request data
         :param uuid: user unique identifier
         :return: json object from got data
         """
-        queryset = UserProfile.objects.select_related('user').filter(user__uid=uuid)
-        serializer = UserSerizalier(queryset, many=True, context={"request": request})
+        queryset = UserProfile.objects.filter(user__id=uuid)
+        serializer = UserSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data, status=HTTP_200_OK)
 
     @staticmethod

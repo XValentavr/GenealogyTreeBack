@@ -41,12 +41,13 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'authentication.apps.AuthenticationConfig',
     'homepage.apps.HomepageConfig',
-    'register.apps.RegisterConfig',
     'userprofile.apps.UserprofileConfig',
     'deal.apps.DealConfig',
     'tree.apps.TreeConfig',
     'support.apps.SupportConfig',
-    'documents.apps.DocumentsConfig'
+    'documents.apps.DocumentsConfig',
+    'genealogistBuildsTree.apps.GenealogistbuildstreeConfig',
+    'allUsers.apps.AllusersConfig'
 ]
 
 MIDDLEWARE = [
@@ -84,12 +85,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': "familytree",
-        'USER': "postgres",
-        'PASSWORD': "admin",
+        'USER': "root",
+        'PASSWORD': "root",
         'HOST': 'localhost',
-        'PORT': '5433'
+        'PORT': '3306'
     }
 }
 

@@ -6,6 +6,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('homepage.urls')),
+    path('users/', include('allUsers.urls')),
 
     path('auth/', include('authentication.urls')),
 
@@ -15,8 +16,9 @@ urlpatterns = [
 
     path('tree/<uuid>/', include('tree.urls')),
 
-    path('support/', include('support.urls'))
+    path('support/', include('support.urls')),
 
+    path('genealogistbuildstree/', include('genealogistBuildsTree.urls')),
     # re_path('password/.*', SetNewPassword.as_view()),
 
 ]
