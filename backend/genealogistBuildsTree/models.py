@@ -18,7 +18,7 @@ class GenealogistBuildsTree(models.Model):
                                     related_name='genealogist')
 
     def __str__(self):
-        return self.client.user.username
+        return self.client.username
 
     class Meta:
         verbose_name = 'Дерево клієнта'

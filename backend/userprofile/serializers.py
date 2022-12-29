@@ -36,9 +36,9 @@ class UserSerializer(serializers.ModelSerializer):
 class PartialUpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ('userName',
-                  'lastName',
-                  'firstName',
+        fields = ('username',
+                  'last_name',
+                  'first_name',
                   'email')
 
 

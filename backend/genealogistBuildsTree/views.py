@@ -7,11 +7,12 @@ from rest_framework.views import APIView
 from genealogistBuildsTree.models import GenealogistBuildsTree
 from genealogistBuildsTree.serializers import GetGenealogistBuildsTreeSerializers, \
     CreateGenealogistBuildsTreeSerializers, ChangeOrDeleteGenealogistBuildsTreeSerializers
+from tree.models import MainRootUser
 
 
 class GetBuildTreeByGenealogist(APIView):
     authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     @staticmethod
     def get(request):
@@ -34,6 +35,12 @@ class GetBuildTreeByGenealogist(APIView):
         serializer = CreateGenealogistBuildsTreeSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            buildsBy = GenealogistBuildsTree.objects.filter(client=request.data.get("client")).first()
+
+            setBuildsBy = MainRootUser.objects.filter(rootUser=request.data.get("client")).first()
+            setBuildsBy.buildsBy = buildsBy
+            setBuildsBy.save()
+
             return Response(status=HTTP_200_OK)
         return Response(status=HTTP_400_BAD_REQUEST)
 

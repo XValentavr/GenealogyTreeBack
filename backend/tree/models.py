@@ -3,6 +3,7 @@ from django.db import models
 
 from authentication.models import UserAccount
 from documents.models import Documents
+from genealogistBuildsTree.models import GenealogistBuildsTree
 
 
 # Create your models here.
@@ -11,18 +12,18 @@ class MainRootUser(models.Model):
     This class creates database root user
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    rootUser = models.OneToOneField(UserAccount, null=True, on_delete=models.CASCADE)
     surname = models.CharField(max_length=255, null=True)
     mother_surname = models.CharField(max_length=255, null=True)
     date_of_birth = models.DateField(default=None, null=True)
     place_of_birth = models.CharField(max_length=255, null=True)
     date_of_marry = models.DateField(default=None, null=True)
-    is_dead = models.BooleanField(default=False)
     date_of_death = models.DateField(default=None, null=True)
     years = models.CharField(max_length=255, default=None, null=True)
+    buildsBy = models.ForeignKey(GenealogistBuildsTree, default=None, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.user.first_name
+        return self.rootUser.first_name
 
     class Meta:
         verbose_name = 'Корінь дерева'

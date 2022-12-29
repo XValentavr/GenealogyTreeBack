@@ -1,7 +1,5 @@
-import uuid
-
 from rest_framework import authentication, permissions
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,9 +11,9 @@ from tree.special_functions import add_new_params_to_request
 from userprofile.serializers import PartialUpdateUserSerializer
 
 
-class GetRootUserInformation(APIView):
+class GetTreeRootUserInformation(APIView):
     authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
 
     @staticmethod
     def get(request, uuid):
@@ -25,33 +23,45 @@ class GetRootUserInformation(APIView):
         :param uuid: user identifier
         :return: response 201 or 500
         """
-        root_user = MainRootUser.objects.select_related('user').filter(user__uid=uuid).first()
-        serialized = MainRootUserSerializer(root_user, context={"request": request})
+        root_user = MainRootUser.objects.filter(rootUser__id=uuid).all()
+        for user in root_user:
+            if user.buildsBy:
+                serialized = MainRootUserSerializer(user, context={"request": request})
+                if serialized:
+                    return Response(serialized.data, status=201)
+        serialized = MainRootUserSerializer(root_user[0], context={"request": request})
         if serialized:
             return Response(serialized.data, status=201)
-        return Response('An error occured. Bad request', status=500)
+
+        return Response('An error occurred. Bad request', status=500)
+
+
+class PatchTreeRootUserInformation(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     @staticmethod
     def patch(request, uuid):
         """
         Represents PATCH request
         :param request: all data in request
-        :param uuid: user iidentifier
+        :param uuid: tree identifier
         :return: response 201 or 500
         """
-        user = UserAccount.objects.filter(uid=uuid).first()
+        print(request.data)
+        treeRootUser = MainRootUser.objects.filter(id=uuid).first()
+        root_serialized = PartialUpdateMainRootUserSerializer(
+            treeRootUser,
+            data=request.data, partial=True)
+        user = UserAccount.objects.filter(id=treeRootUser.rootUser.id).first()
+
         user_serialized = PartialUpdateUserSerializer(user, data=request.data,
                                                       partial=True)
-
-        root_serialized = PartialUpdateMainRootUserSerializer(
-            MainRootUser.objects.filter(user__uid=uuid).first(),
-            data=request.data, partial=True)
-
         if user_serialized.is_valid() and root_serialized.is_valid():
             user_serialized.save()
             root_serialized.save()
             return Response("It's OK.", status=201)
-        return Response('An error occured. Bad request', status=500)
+        return Response('An error occurred. Bad request', status=500)
 
 
 class WifeOrSpouseToRootTree(RetrieveUpdateDestroyAPIView):

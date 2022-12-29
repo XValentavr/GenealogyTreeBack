@@ -1,20 +1,20 @@
 from rest_framework import serializers
 
-from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse
+from tree.models import MainRootUser, MainRootUserSpouse
 
 
 class MainRootUserSerializer(serializers.ModelSerializer):
     """
-    resialize get request abount root user of tree
+    serialize get request about root user of tree
     """
-    lastname = serializers.CharField(source='user.last_name')
-    first_name = serializers.CharField(source='user.first_name')
+    lastName = serializers.CharField(source='rootUser.last_name')
+    firstName = serializers.CharField(source='rootUser.first_name')
 
     class Meta:
         model = MainRootUser
-        fields = (
-            'first_name', 'lastname', 'surname', 'mother_surname',
-            'date_of_birth', 'place_of_birth', 'date_of_marry')
+        fields = ("id", "rootUser", "buildsBy", "years",
+                  'firstName', 'lastName', 'surname', 'mother_surname',
+                  'date_of_birth', 'place_of_birth', 'date_of_marry', 'date_of_death')
 
 
 class PartialUpdateMainRootUserSerializer(serializers.ModelSerializer):
