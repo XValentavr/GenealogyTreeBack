@@ -12,7 +12,7 @@ class MainRootUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MainRootUser
-        fields = ("id", "rootUser", "buildsBy", "years",
+        fields = ("id", "rootUser", "buildsBy",
                   'firstName', 'lastName', 'surname', 'mother_surname',
                   'date_of_birth', 'place_of_birth', 'date_of_marry', 'date_of_death')
 
@@ -22,7 +22,7 @@ class PartialUpdateMainRootUserSerializer(serializers.ModelSerializer):
         model = MainRootUser
         fields = (
             'surname', 'mother_surname',
-            'date_of_birth', 'place_of_birth', 'date_of_marry'
+            'date_of_birth', 'place_of_birth', 'date_of_marry', 'date_of_death'
         )
 
 

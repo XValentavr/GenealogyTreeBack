@@ -62,5 +62,5 @@ def create_user_profile(user):
     userprofile.save()
 
     from tree.models import MainRootUser
-    root_user = MainRootUser(user=user, user_id=user.pk, buildsBy=None)
+    root_user = MainRootUser(rootUser=user, rootUser_id=user.pk, buildsBy=None)
     root_user.save()

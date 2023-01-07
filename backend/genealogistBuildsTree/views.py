@@ -1,3 +1,5 @@
+import json
+
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework import authentication, permissions
 from rest_framework.response import Response
@@ -21,7 +23,10 @@ class GetBuildTreeByGenealogist(APIView):
         :param request: all request data
         :return: json object from got data
         """
-        queryset = GenealogistBuildsTree.objects.all()
+        if request.GET.get("status"):
+            queryset = GenealogistBuildsTree.objects.filter(status=request.GET.get("status"))
+        else:
+            queryset = GenealogistBuildsTree.objects.all()
         serializer = GetGenealogistBuildsTreeSerializers(queryset, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
 
@@ -47,6 +52,11 @@ class GetBuildTreeByGenealogist(APIView):
 
 class BuildTreeByGenealogist(RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = ChangeOrDeleteGenealogistBuildsTreeSerializers
-    queryset = GenealogistBuildsTree.objects.all()
+
+    def get_queryset(self):
+        if 'colorCode' in json.loads(self.request.body):
+            genealogist_id = GenealogistBuildsTree.objects.filter(id=self.kwargs['pk']).first().genealogist_id
+            return GenealogistBuildsTree.objects.filter(genealogist_id=genealogist_id).all()
+        return GenealogistBuildsTree.objects.filter(id=self.kwargs['pk'])

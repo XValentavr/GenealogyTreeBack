@@ -4,6 +4,7 @@ from genealogistBuildsTree.views import GetBuildTreeByGenealogist, BuildTreeByGe
 
 urlpatterns = [
     path('api/v1/fetch/', GetBuildTreeByGenealogist.as_view()),
+    path('api/v1/fetch/(?P<status>\w+)/', GetBuildTreeByGenealogist.as_view()),
     path('<pk>/api/v1/fetch/', BuildTreeByGenealogist.as_view()),
 
 ]

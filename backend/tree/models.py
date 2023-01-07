@@ -19,7 +19,6 @@ class MainRootUser(models.Model):
     place_of_birth = models.CharField(max_length=255, null=True)
     date_of_marry = models.DateField(default=None, null=True)
     date_of_death = models.DateField(default=None, null=True)
-    years = models.CharField(max_length=255, default=None, null=True)
     buildsBy = models.ForeignKey(GenealogistBuildsTree, default=None, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

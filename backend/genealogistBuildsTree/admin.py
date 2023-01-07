@@ -7,7 +7,7 @@ from genealogistBuildsTree.models import GenealogistBuildsTree
 @admin.register(GenealogistBuildsTree)
 class GenealogistBuildTree(admin.ModelAdmin):
     model = GenealogistBuildsTree
-    list_display = ['id', 'client', 'isShown', 'genealogist']
+    list_display = ['id', 'client', 'isShown', 'genealogist', 'status']
     list_display_links = ('id',)
     search_fields = ('client', 'genealogist')
     list_editable = ('isShown', 'genealogist',)

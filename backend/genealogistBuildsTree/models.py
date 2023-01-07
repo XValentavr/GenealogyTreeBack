@@ -16,6 +16,8 @@ class GenealogistBuildsTree(models.Model):
     isShown = models.BooleanField(default=False, null=True)
     genealogist = models.ForeignKey(UserAccount, null=True, on_delete=models.CASCADE, unique=False,
                                     related_name='genealogist')
+    status = models.CharField(default='in process', null=False, max_length=32)
+    colorCode = models.CharField(default="#0000ff", null=False, max_length=15)
 
     def __str__(self):
         return self.client.username

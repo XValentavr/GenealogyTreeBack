@@ -48,7 +48,6 @@ class PatchTreeRootUserInformation(APIView):
         :param uuid: tree identifier
         :return: response 201 or 500
         """
-        print(request.data)
         treeRootUser = MainRootUser.objects.filter(id=uuid).first()
         root_serialized = PartialUpdateMainRootUserSerializer(
             treeRootUser,
