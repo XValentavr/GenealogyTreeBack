@@ -1,40 +1,42 @@
 from rest_framework import serializers
 
-from tree.models import MainRootUser, MainRootUserSpouse
+from tree.models import MainRootUser, MainRootUserSpouse, AnyTreeInfo
 
 
 class MainRootUserSerializer(serializers.ModelSerializer):
     """
     serialize get request about root user of tree
     """
-    lastName = serializers.CharField(source='rootUser.last_name')
-    firstName = serializers.CharField(source='rootUser.first_name')
+    anyInfo = serializers.RelatedField(read_only=True)
+
+    def to_representation(self, instance):
+        return PartialUpdateOrGetMainRootUserSerializer(instance).data
 
     class Meta:
         model = MainRootUser
-        fields = ("id", "rootUser", "buildsBy",
-                  'firstName', 'lastName', 'surname', 'mother_surname',
-                  'date_of_birth', 'place_of_birth', 'date_of_marry', 'date_of_death')
+        fields = ("id", "rootUser", "buildsBy", "anyInfo")
 
 
-class PartialUpdateMainRootUserSerializer(serializers.ModelSerializer):
+class PartialUpdateOrGetMainRootUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MainRootUser
-        fields = (
-            'surname', 'mother_surname',
-            'date_of_birth', 'place_of_birth', 'date_of_marry', 'date_of_death'
-        )
+        model = AnyTreeInfo
+        fields = ('firstName', 'lastName',
+                  'surname', 'motherSurname',
+                  'dateOfBirth', 'placeOfBirth', 'dateOfMarry',
+                  'dateOfDeath', 'isConfidential', 'placeOfDeath',
+                  'reasonOfDeath',
+                  )
 
 
 class GetWifeOrSpouseToRootTreeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainRootUserSpouse
         fields = (
-            "name", "surname", "last_name",
-            "mother_surname",
-            "date_of_birth", "place_of_birth",
-            "date_of_marry", "is_dead", "date_of_death",
-            "email", "user"
+            "anyInfo__surname", "anyInfo__lastName",
+            "anyInfo__motherSurname",
+            "anyInfo__dateOfBirth", "anyInfo__placeOfBirth",
+            "anyInfo__dateOfMarry", "anyInfo__isDead", "anyInfo__dateOfDeath",
+            "anyInfo__email"
         )
 
 
@@ -42,9 +44,9 @@ class InsertWifeOrSpouseToRootTreeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainRootUserSpouse
         fields = ("id", "wife",
-                  "name", "surname", "last_name",
-                  "mother_surname",
-                  "date_of_birth", "place_of_birth",
-                  "date_of_marry", "is_dead", "date_of_death",
-                  "email", "user"
+                  "anyInfo__firstName", "anyInfo__surname", "anyInfo__lastName",
+                  "anyInfo__motherSurname",
+                  "anyInfo__dateOfBirth", "anyInfo__placeOfBirth",
+                  "anyInfo__dateOfMarry", "anyInfo__isDead", "anyInfo__dateOfDeath",
+                  "anyInfo__email", "anyInfo__user"
                   )

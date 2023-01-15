@@ -8,11 +8,11 @@ from userprofile.models import UserProfile
 class UserProfile(admin.ModelAdmin):
     model = UserProfile
     list_display = (
-        'id', 'get_name', 'date_of_birth', 'avatar', 'telegram', 'facebook', 'whatsapp', 'twitter', 'linkedin',)
-    list_display_links = ('id', 'get_name')
+        'id', 'getName', 'dateOfBirth', 'avatar', 'telegram', 'facebook', 'whatsapp', 'twitter', 'linkedin',)
+    list_display_links = ('id', 'getName')
     search_fields = ('get_name',)
-    list_editable = ('date_of_birth', 'avatar', 'telegram', 'facebook', 'whatsapp', 'twitter', 'linkedin',)
+    list_editable = ('dateOfBirth', 'avatar', 'telegram', 'facebook', 'whatsapp', 'twitter', 'linkedin',)
 
     @staticmethod
-    def get_name(obj):
+    def getName(obj):
         return obj.user.username

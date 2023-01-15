@@ -7,7 +7,7 @@ User = get_user_model()
 class UserCreateMySerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ('id', 'email', 'name', 'password', 'is_genealogist',)
+        fields = ('id', 'email', 'name', 'password', 'isGenealogist',)
 
 
 class GetUserUUID(UserCreateSerializer):

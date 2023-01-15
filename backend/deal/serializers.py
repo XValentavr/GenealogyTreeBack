@@ -23,7 +23,7 @@ class CreateDealSerializer(serializers.ModelSerializer):
         model = DealWithClient
         fields = ('client', 'date',
                   'document',
-                  'context', 'is_published',
+                  'context', 'isPublished',
                   'genealogist')
 
 
@@ -32,6 +32,6 @@ class UpdatePartialDealSerializer(serializers.ModelSerializer):
         model = DealWithClient
         fields = ('date',
                   'document',
-                  'context', 'is_published',
+                  'context', 'isPublished',
                   'genealogist')
 

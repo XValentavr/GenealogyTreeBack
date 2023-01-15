@@ -1,14 +1,13 @@
 from rest_framework import authentication, permissions
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from authentication.models import UserAccount
-from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse
-from tree.serializers import MainRootUserSerializer, PartialUpdateMainRootUserSerializer, \
+from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse, AnyTreeInfo
+from tree.serializers import PartialUpdateOrGetMainRootUserSerializer, \
     GetWifeOrSpouseToRootTreeSerializer, InsertWifeOrSpouseToRootTreeSerializer
 from tree.special_functions import add_new_params_to_request
-from userprofile.serializers import PartialUpdateUserSerializer
 
 
 class GetTreeRootUserInformation(APIView):
@@ -23,15 +22,13 @@ class GetTreeRootUserInformation(APIView):
         :param uuid: user identifier
         :return: response 201 or 500
         """
-        root_user = MainRootUser.objects.filter(rootUser__id=uuid).all()
-        for user in root_user:
-            if user.buildsBy:
-                serialized = MainRootUserSerializer(user, context={"request": request})
-                if serialized:
-                    return Response(serialized.data, status=201)
-        serialized = MainRootUserSerializer(root_user[0], context={"request": request})
-        if serialized:
-            return Response(serialized.data, status=201)
+        rootUser = MainRootUser.objects.filter(rootUser__id=uuid).first()
+
+        if rootUser.buildsBy:
+            treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=rootUser.anyInfo_id).first()
+            serialized = PartialUpdateOrGetMainRootUserSerializer(treeRootUserAnyInfo, context={"request": request})
+            if serialized.data:
+                return Response(serialized.data, status=201)
 
         return Response('An error occurred. Bad request', status=500)
 
@@ -39,6 +36,7 @@ class GetTreeRootUserInformation(APIView):
 class PatchTreeRootUserInformation(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+    renderer_classes = [JSONRenderer]
 
     @staticmethod
     def patch(request, uuid):
@@ -48,16 +46,25 @@ class PatchTreeRootUserInformation(APIView):
         :param uuid: tree identifier
         :return: response 201 or 500
         """
-        treeRootUser = MainRootUser.objects.filter(id=uuid).first()
-        root_serialized = PartialUpdateMainRootUserSerializer(
-            treeRootUser,
-            data=request.data, partial=True)
-        user = UserAccount.objects.filter(id=treeRootUser.rootUser.id).first()
+        treeRootUser = MainRootUser.objects.filter(rootUser__id=uuid).first()
+        treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=treeRootUser.anyInfo_id).first()
 
-        user_serialized = PartialUpdateUserSerializer(user, data=request.data,
-                                                      partial=True)
-        if user_serialized.is_valid() and root_serialized.is_valid():
-            user_serialized.save()
+        if not treeRootUserAnyInfo:
+            anyInfo = AnyTreeInfo.objects.create(firstName=None, surname=None, lastName=None, motherSurname=None,
+                                                 dateOfBirth=None, placeOfBirth=None, dateOfMarry=None,
+                                                 dateOfDeath=None, placeOfDeath=None, reasonOfDeath=None, document=None,
+                                                 isPublished=False, sex='м',
+                                                 isConfidential=False)
+
+            treeRootUser.anyInfo = anyInfo
+            treeRootUser.save()
+
+        treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=treeRootUser.anyInfo_id).first()
+        root_serialized = PartialUpdateOrGetMainRootUserSerializer(
+            treeRootUserAnyInfo,
+            data=request.data, partial=True)
+
+        if root_serialized.is_valid():
             root_serialized.save()
             return Response("It's OK.", status=201)
         return Response('An error occurred. Bad request', status=500)

@@ -6,6 +6,37 @@ from documents.models import Documents
 from genealogistBuildsTree.models import GenealogistBuildsTree
 
 
+class AnyTreeInfo(models.Model):
+    """
+    This class creates database base info about any part of tree
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+
+    firstName = models.CharField(max_length=255, null=True)
+    surname = models.CharField(max_length=255, null=True)
+    lastName = models.CharField(max_length=255, null=True)
+    motherSurname = models.CharField(max_length=255, null=True)
+    dateOfBirth = models.DateField(default=None, null=True)
+    placeOfBirth = models.CharField(max_length=255, null=True)
+    dateOfMarry = models.DateField(default=None, null=True)
+    dateOfDeath = models.DateField(default=None, null=True)
+    placeOfDeath = models.CharField(max_length=255, null=True)
+    reasonOfDeath = models.CharField(max_length=255, null=True)
+
+    document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
+    isPublished = models.BooleanField(default=False)
+    sex = models.CharField(max_length=10, null=True)
+    isConfidential = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        verbose_name = 'Корінь дерева'
+        verbose_name_plural = 'Корінь дерева'
+        ordering = ['id']
+
+
 # Create your models here.
 class MainRootUser(models.Model):
     """
@@ -13,16 +44,12 @@ class MainRootUser(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     rootUser = models.OneToOneField(UserAccount, null=True, on_delete=models.CASCADE)
-    surname = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    date_of_death = models.DateField(default=None, null=True)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, related_name='allInfo', on_delete=models.SET_NULL)
+
     buildsBy = models.ForeignKey(GenealogistBuildsTree, default=None, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.rootUser.first_name
+        return self.rootUser.username
 
     class Meta:
         verbose_name = 'Корінь дерева'
@@ -36,22 +63,13 @@ class MainRootUserWife(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     spouse = models.ForeignKey(MainRootUser, on_delete=models.CASCADE, unique=False)
-    name = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    last_name = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    is_dead = models.BooleanField(default=False)
-    date_of_death = models.DateField(default=None, null=True)
-    years = models.CharField(max_length=255, default=None, null=True)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, on_delete=models.SET_NULL)
+
     email = models.EmailField(null=True)
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
-    sex = models.CharField(max_length=10, null=False, default='М')
 
     def __str__(self):
-        return self.name
+        return self.anyInfo.firstName
 
     class Meta:
         verbose_name = 'Дружина'
@@ -64,22 +82,13 @@ class MainRootUserSpouse(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     wife = models.ForeignKey(MainRootUser, on_delete=models.CASCADE, unique=False)
-    name = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    last_name = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    is_dead = models.BooleanField(default=False)
-    date_of_death = models.DateField(default=None, null=True)
-    years = models.CharField(max_length=255, default=None, null=True)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, on_delete=models.SET_NULL)
+
     email = models.EmailField(null=True)
-    sex = models.CharField(max_length=10, null=False, default='М')
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, unique=False)
 
     def __str__(self):
-        return self.name
+        return self.anyInfo.firstName
 
     class Meta:
         verbose_name = 'Чоловік'
@@ -92,21 +101,12 @@ class FemaleLine(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    last_name = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    date_of_death = models.DateField(default=None, null=True)
-    document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
-    is_published = models.BooleanField(default=False)
-    sex = models.CharField(max_length=10, null=False, default='Ж')
-    prev_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, on_delete=models.SET_NULL)
+
+    prevAncestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name + ' ' + self.surname
+        return self.anyInfo.firstName + ' ' + self.anyInfo.lastName + ' ' + self.anyInfo.surname
 
     class Meta:
         verbose_name = 'Інформація по жіночій лінії'
@@ -119,21 +119,12 @@ class MaleLine(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    last_name = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    date_of_death = models.DateField(default=None, null=True)
-    document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
-    is_published = models.BooleanField(default=False)
-    sex = models.CharField(max_length=10, null=False, default='М')
-    prev_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, on_delete=models.SET_NULL)
+
+    prevAncestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name + ' ' + self.surname
+        return self.anyInfo.firstName + ' ' + self.anyInfo.lastName + ' ' + self.anyInfo.surname
 
     class Meta:
         verbose_name = 'Інформація по чоловічій лінії'
@@ -146,21 +137,12 @@ class FemaleLineChild(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    last_name = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    date_of_death = models.DateField(default=None, null=True)
-    document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
-    is_published = models.BooleanField(default=False)
-    sex = models.CharField(max_length=10, null=False, default='М')
-    next_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, on_delete=models.SET_NULL)
+
+    nextAncestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name + ' ' + self.surname
+        return self.anyInfo.firstName + ' ' + self.anyInfo.lastName + ' ' + self.anyInfo.surname
 
     class Meta:
         verbose_name = 'Інформація по чоловічій лінії'
@@ -173,21 +155,12 @@ class MaleLineChild(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     root = models.ForeignKey(MainRootUser, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, null=True)
-    surname = models.CharField(max_length=255, null=True)
-    last_name = models.CharField(max_length=255, null=True)
-    mother_surname = models.CharField(max_length=255, null=True)
-    date_of_birth = models.DateField(default=None, null=True)
-    place_of_birth = models.CharField(max_length=255, null=True)
-    date_of_marry = models.DateField(default=None, null=True)
-    date_of_death = models.DateField(default=None, null=True)
-    document = models.ForeignKey(Documents, null=True, on_delete=models.SET_NULL)
-    is_published = models.BooleanField(default=False)
-    sex = models.CharField(max_length=10, null=False, default='Ж')
-    next_ancestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    anyInfo = models.ForeignKey(AnyTreeInfo, null=True, on_delete=models.SET_NULL)
+
+    nextAncestor = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name + ' ' + self.surname
+        return self.anyInfo.firstName + ' ' + self.anyInfo.lastName + ' ' + self.anyInfo.surname
 
     class Meta:
         verbose_name = 'Інформація про дітей по чоловічій лінії'

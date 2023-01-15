@@ -7,10 +7,10 @@ from deal.models import DealWithClient
 @admin.register(DealWithClient)
 class Deal(admin.ModelAdmin):
     model = DealWithClient
-    list_display = ['id', 'clientTree', 'date', 'document', 'context', 'genealogistTree', 'is_published']
+    list_display = ['id', 'clientTree', 'date', 'document', 'context', 'genealogistTree', 'isPublished']
     list_display_links = ('id',)
     search_fields = ('clientTree',)
-    list_editable = ('date', 'document', 'context', 'genealogistTree', 'is_published', 'clientTree',)
+    list_editable = ('date', 'document', 'context', 'genealogistTree', 'isPublished', 'clientTree',)
 
     @staticmethod
     def client(obj):

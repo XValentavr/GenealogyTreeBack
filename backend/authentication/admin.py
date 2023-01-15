@@ -7,6 +7,6 @@ from authentication.models import UserAccount
 @admin.register(UserAccount)
 class User(admin.ModelAdmin):
     fields = (
-        'id', 'email', 'username', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser', 'last_login',
-        'date_joined', "is_genealogist")
+        'id', 'email', 'username', 'firstName', 'lastName', 'isActive', 'isStaff', 'isSuperuser', 'last_login',
+        'date_joined', "isGenealogist")
     readonly_fields = ('id',)

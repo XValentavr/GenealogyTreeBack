@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     user = models.OneToOneField(UserAccount, related_name='user', on_delete=models.CASCADE)
-    date_of_birth = models.DateField(default=None, null=True)
+    dateOfBirth = models.DateField(default=None, null=True)
     avatar = models.ImageField(upload_to=f'photos/{UserAccount.id}/',
                                default=MEDIA_ROOT + '/userprofile/photos/default.jpg', blank=True, null=True)
 

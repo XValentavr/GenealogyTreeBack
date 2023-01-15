@@ -6,7 +6,6 @@ from authentication.models import UserAccount
 class GetAllUsers(serializers.ModelSerializer):
     userName = serializers.CharField(source='username')
     lastName = serializers.CharField(source='last_name')
-    isGenealogist = serializers.BooleanField(source='is_genealogist')
     isSuperuser = serializers.BooleanField(source='is_superuser')
 
     class Meta:

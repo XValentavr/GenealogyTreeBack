@@ -58,9 +58,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
-]
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
 
+]
+LANGUAGE_CODE = 'ru'
+LANGUAGES = (('en', "English",), ('ru', "Russian",),)
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -77,7 +80,7 @@ TEMPLATES = [
         },
     },
 ]
-
+DEFAULT_CHARSET = "utf-8"
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
@@ -176,6 +179,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
 }
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

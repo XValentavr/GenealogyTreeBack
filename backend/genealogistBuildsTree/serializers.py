@@ -9,11 +9,12 @@ class GetGenealogistBuildsTreeSerializers(serializers.ModelSerializer):
     email = serializers.CharField(source='client.email')
     genealogistName = serializers.CharField(source='genealogist.username', allow_null=True)
     genealogistLastName = serializers.CharField(source='genealogist.last_name', allow_null=True)
+    rootTreeId = serializers.CharField(source='client.id')
 
     class Meta:
         model = GenealogistBuildsTree
         fields = ('id', 'userName', 'lastName',
-                  "email", 'genealogistName', 'genealogistLastName', "status", "colorCode")
+                  "email", 'genealogistName', 'genealogistLastName', "status", "colorCode", 'rootTreeId')
 
 
 class CreateGenealogistBuildsTreeSerializers(serializers.ModelSerializer):
@@ -25,4 +26,4 @@ class CreateGenealogistBuildsTreeSerializers(serializers.ModelSerializer):
 class ChangeOrDeleteGenealogistBuildsTreeSerializers(serializers.ModelSerializer):
     class Meta:
         model = GenealogistBuildsTree
-        fields = ('genealogist', "colorCode")
+        fields = ('genealogist', "colorCode", "status")

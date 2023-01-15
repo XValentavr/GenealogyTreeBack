@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     lastName = serializers.CharField(source='user.last_name')
     email = serializers.CharField(source='user.email')
     sex = serializers.CharField(source='user.sex')
-    isGenealogist = serializers.BooleanField(source='user.is_genealogist')
+    isGenealogist = serializers.BooleanField(source='user.isGenealogist')
     isSuperuser = serializers.BooleanField(source='user.is_superuser')
 
     class Meta:
@@ -38,7 +38,7 @@ class PartialUpdateUserSerializer(serializers.ModelSerializer):
         model = UserAccount
         fields = ('username',
                   'last_name',
-                  'first_name',
+                  'firstName',
                   'email')
 
 

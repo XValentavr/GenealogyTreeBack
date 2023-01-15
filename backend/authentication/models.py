@@ -5,12 +5,12 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManag
 
 
 class UserAccountManager(UserManager):
-    def create_user(self, username, is_genealogist, email=None, password=None, **extra_fields):
+    def create_user(self, username, isGenealogist, email=None, password=None, **extra_fields):
         if not email:
             raise ValueError('User must have an email address')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username, is_genealogist=is_genealogist)
+        user = self.model(email=email, username=username, isGenealogist=isGenealogist)
         user.set_password(password)
         user.save()
 
@@ -38,11 +38,11 @@ class UserAccount(AbstractUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_genealogist = models.BooleanField(default=False)
+    isGenealogist = models.BooleanField(default=False)
     objects = UserAccountManager()
     sex = models.CharField(max_length=10, default=None, null=True)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'is_genealogist']
+    REQUIRED_FIELDS = ['username', 'isGenealogist']
 
     def __str__(self):
         return self.email

@@ -18,7 +18,7 @@ class DealClientView(ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         client = DealWithClient.objects.select_related('client').filter(client__user__uid=kwargs['uuid'],
-                                                                        is_published=request.data['is_published'])
+                                                                        isPublished=request.data['isPublished'])
         serialized = DealSerializers(client, many=True)
         return Response(serialized.data)
 
