@@ -1,6 +1,6 @@
 import json
 
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -12,7 +12,7 @@ from genealogistBuildsTree.serializers import GetGenealogistBuildsTreeSerializer
 from tree.models import MainRootUser
 
 
-class GetBuildTreeByGenealogist(APIView):
+class GetBuildTreeBySuperGenealogist(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
@@ -60,3 +60,20 @@ class BuildTreeByGenealogist(RetrieveUpdateDestroyAPIView):
             genealogist_id = GenealogistBuildsTree.objects.filter(id=self.kwargs['pk']).first().genealogist_id
             return GenealogistBuildsTree.objects.filter(genealogist_id=genealogist_id).all()
         return GenealogistBuildsTree.objects.filter(id=self.kwargs['pk'])
+
+
+class GetBuildTreeByGenealogist(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    @staticmethod
+    def get(request, genealogist):
+        """
+        this function creates GET request to get all ordering to create tree
+        :param request: all request data
+        :param genealogist: genealogist id
+        :return: json object from got data
+        """
+        queryset = GenealogistBuildsTree.objects.filter(genealogist=genealogist)
+        serializer = GetGenealogistBuildsTreeSerializers(queryset, many=True)
+        return Response(serializer.data, status=HTTP_200_OK)

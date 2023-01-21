@@ -23,7 +23,6 @@ class GetTreeRootUserInformation(APIView):
         :return: response 201 or 500
         """
         rootUser = MainRootUser.objects.filter(rootUser__id=uuid).first()
-
         if rootUser.buildsBy:
             treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=rootUser.anyInfo_id).first()
             serialized = PartialUpdateOrGetMainRootUserSerializer(treeRootUserAnyInfo, context={"request": request})
