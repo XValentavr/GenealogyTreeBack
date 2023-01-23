@@ -4,9 +4,12 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse, AnyTreeInfo
-from tree.serializers import PartialUpdateOrGetMainRootUserSerializer, \
-    GetWifeOrSpouseToRootTreeSerializer, InsertWifeOrSpouseToRootTreeSerializer
+from genealogistBuildsTree.models import GenealogistBuildsTree
+from tree.CRUD.create_initial_anyinfo import create_initial_any_info
+from tree.CRUD.create_male_or_female_line import create_male_of_female_line
+from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse, AnyTreeInfo, FemaleLine, MaleLine
+from tree.serializers import PartialUpdateOrGetOrPostMainRootUserSerializer, \
+    GetWifeOrSpouseToRootTreeSerializer, InsertWifeOrSpouseToRootTreeSerializer, MainOrFemaleOrMaleLinesSerializer
 from tree.special_functions import add_new_params_to_request
 
 
@@ -25,7 +28,8 @@ class GetTreeRootUserInformation(APIView):
         rootUser = MainRootUser.objects.filter(rootUser__id=uuid).first()
         if rootUser.buildsBy:
             treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=rootUser.anyInfo_id).first()
-            serialized = PartialUpdateOrGetMainRootUserSerializer(treeRootUserAnyInfo, context={"request": request})
+            serialized = PartialUpdateOrGetOrPostMainRootUserSerializer(treeRootUserAnyInfo,
+                                                                        context={"request": request})
             if serialized.data:
                 return Response(serialized.data, status=201)
 
@@ -47,20 +51,10 @@ class PatchTreeRootUserInformation(APIView):
         """
         treeRootUser = MainRootUser.objects.filter(rootUser__id=uuid).first()
         treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=treeRootUser.anyInfo_id).first()
+        anyInfo = create_initial_any_info(treeRootUser, treeRootUserAnyInfo)
 
-        if not treeRootUserAnyInfo:
-            anyInfo = AnyTreeInfo.objects.create(firstName=None, surname=None, lastName=None, motherSurname=None,
-                                                 dateOfBirth=None, placeOfBirth=None, dateOfMarry=None,
-                                                 dateOfDeath=None, placeOfDeath=None, reasonOfDeath=None, document=None,
-                                                 isPublished=False, sex='м',
-                                                 isConfidential=False)
-
-            treeRootUser.anyInfo = anyInfo
-            treeRootUser.save()
-
-        treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=treeRootUser.anyInfo_id).first()
-        root_serialized = PartialUpdateOrGetMainRootUserSerializer(
-            treeRootUserAnyInfo,
+        root_serialized = PartialUpdateOrGetOrPostMainRootUserSerializer(
+            treeRootUserAnyInfo if treeRootUserAnyInfo else anyInfo,
             data=request.data, partial=True)
 
         if root_serialized.is_valid():
@@ -97,3 +91,17 @@ class InsertWifeOrSpouseToRootTree(CreateAPIView):
         elif request.data['wife'] is not None:
             return Response(InsertWifeOrSpouseToRootTreeSerializer(
                 MainRootUserSpouse.objects.filter(wife__user__uid=self.kwargs['uuid']).first()).data, status=201)
+
+
+class CreateMaleOrFemaleLine(CreateAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        if 'м' in request.data.get('sex'):
+            femaleLineAnyInfo = PartialUpdateOrGetOrPostMainRootUserSerializer(data=request.data)
+            return create_male_of_female_line(uuid=self.kwargs['uuid'], lineInfo=femaleLineAnyInfo, model=FemaleLine)
+
+        if 'ж' in request.data.get('sex'):
+            maleLineAnyInfo = PartialUpdateOrGetOrPostMainRootUserSerializer(data=request.data)
+            return create_male_of_female_line(uuid=self.kwargs['uuid'], lineInfo=maleLineAnyInfo, model=MaleLine)

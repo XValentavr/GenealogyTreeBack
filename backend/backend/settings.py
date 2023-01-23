@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'authentication.apps.AuthenticationConfig',
-    'homepage.apps.HomepageConfig',
     'userprofile.apps.UserprofileConfig',
     'deal.apps.DealConfig',
     'tree.apps.TreeConfig',
@@ -92,7 +91,7 @@ DATABASES = {
         'NAME': "familytree",
         'USER': "root",
         'PASSWORD': "root",
-        'HOST': 'localhost',
+        'HOST': '0.0.0.0',
         'PORT': '3306'
     }
 }

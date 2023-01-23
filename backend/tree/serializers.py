@@ -3,28 +3,28 @@ from rest_framework import serializers
 from tree.models import MainRootUser, MainRootUserSpouse, AnyTreeInfo
 
 
-class MainRootUserSerializer(serializers.ModelSerializer):
+class MainOrFemaleOrMaleLinesSerializer(serializers.ModelSerializer):
     """
     serialize get request about root user of tree
     """
     anyInfo = serializers.RelatedField(read_only=True)
 
     def to_representation(self, instance):
-        return PartialUpdateOrGetMainRootUserSerializer(instance).data
+        return PartialUpdateOrGetOrPostMainRootUserSerializer(instance).data
 
     class Meta:
         model = MainRootUser
         fields = ("id", "rootUser", "buildsBy", "anyInfo")
 
 
-class PartialUpdateOrGetMainRootUserSerializer(serializers.ModelSerializer):
+class PartialUpdateOrGetOrPostMainRootUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnyTreeInfo
-        fields = ('firstName', 'lastName',
+        fields = ('id', 'firstName', 'lastName',
                   'surname', 'motherSurname',
                   'dateOfBirth', 'placeOfBirth', 'dateOfMarry',
                   'dateOfDeath', 'isConfidential', 'placeOfDeath',
-                  'reasonOfDeath',
+                  'reasonOfDeath', 'sex'
                   )
 
 
