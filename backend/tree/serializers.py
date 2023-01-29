@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tree.models import MainRootUser, MainRootUserSpouse, AnyTreeInfo
+from tree.models import MainRootUser, AnyTreeInfo, MainRootUserSpouse
 
 
 class MainOrFemaleOrMaleLinesSerializer(serializers.ModelSerializer):

@@ -9,11 +9,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os.path
 from datetime import timedelta
 from pathlib import Path
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv('../.env.dev')
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -27,7 +25,6 @@ ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,8 +42,7 @@ INSTALLED_APPS = [
     'tree.apps.TreeConfig',
     'support.apps.SupportConfig',
     'documents.apps.DocumentsConfig',
-    'genealogistBuildsTree.apps.GenealogistbuildstreeConfig',
-    'allUsers.apps.AllusersConfig'
+    'genealogistBuildsTree.apps.GenealogistBuildsTreeConfig',
 ]
 
 MIDDLEWARE = [
@@ -90,8 +86,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "familytree",
         'USER': "root",
-        'PASSWORD': "root",
-        'HOST': '0.0.0.0',
+        'PASSWORD': "test",
+        'HOST': 'localhost',
         'PORT': '3306'
     }
 }

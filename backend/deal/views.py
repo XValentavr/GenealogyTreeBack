@@ -6,8 +6,8 @@ from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 
 from deal.models import DealWithClient
-from userprofile.models import UserProfile
 from deal.serializers import DealSerializers, CreateDealSerializer, UpdatePartialDealSerializer
+from userprofile.models import UserProfile
 
 
 # Create your views here.

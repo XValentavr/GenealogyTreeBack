@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GenealogistbuildstreeConfig(AppConfig):
+class GenealogistBuildsTreeConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "genealogistBuildsTree"

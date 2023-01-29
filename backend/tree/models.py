@@ -4,6 +4,7 @@ from django.db import models
 from authentication.models import UserAccount
 from documents.models import Documents
 from genealogistBuildsTree.models import GenealogistBuildsTree
+from helpers.enums.sex_enum import SexEnum
 
 
 class AnyTreeInfo(models.Model):

@@ -2,15 +2,17 @@ from rest_framework import authentication, permissions
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
-from genealogistBuildsTree.models import GenealogistBuildsTree
-from tree.CRUD.create_initial_anyinfo import create_initial_any_info
-from tree.CRUD.create_male_or_female_line import create_male_of_female_line
-from tree.models import MainRootUser, MainRootUserWife, MainRootUserSpouse, AnyTreeInfo, FemaleLine, MaleLine
+from dtos.tree.pathTreeRootUserDTO import PatchTreeRootDTO
+from tree.models import MainRootUser, AnyTreeInfo, MainRootUserWife, MainRootUserSpouse, FemaleLine, MaleLine
 from tree.serializers import PartialUpdateOrGetOrPostMainRootUserSerializer, \
-    GetWifeOrSpouseToRootTreeSerializer, InsertWifeOrSpouseToRootTreeSerializer, MainOrFemaleOrMaleLinesSerializer
-from tree.special_functions import add_new_params_to_request
+    GetWifeOrSpouseToRootTreeSerializer, InsertWifeOrSpouseToRootTreeSerializer
+from helpers.enums.sex_enum import SexEnum
+from helpers.special.special_functions import add_new_params_to_request
+from services.CRUD.tree.create_initial_anyinfo import create_initial_any_info
+from services.CRUD.tree.create_male_or_female_line import create_male_of_female_line
 
 
 class GetTreeRootUserInformation(APIView):
@@ -53,9 +55,11 @@ class PatchTreeRootUserInformation(APIView):
         treeRootUserAnyInfo = AnyTreeInfo.objects.filter(id=treeRootUser.anyInfo_id).first()
         anyInfo = create_initial_any_info(treeRootUser, treeRootUserAnyInfo)
 
+        patch_data_dto = PatchTreeRootDTO(**request.data).dict(exclude_none=True)
+
         root_serialized = PartialUpdateOrGetOrPostMainRootUserSerializer(
             treeRootUserAnyInfo if treeRootUserAnyInfo else anyInfo,
-            data=request.data, partial=True)
+            data=patch_data_dto, partial=True)
 
         if root_serialized.is_valid():
             root_serialized.save()
@@ -98,10 +102,12 @@ class CreateMaleOrFemaleLine(CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        if 'м' in request.data.get('sex'):
-            femaleLineAnyInfo = PartialUpdateOrGetOrPostMainRootUserSerializer(data=request.data)
+        postTreeLineDTO = PatchTreeRootDTO(**request.data).dict(exclude_none=True)
+        if request.data.get('sex') == SexEnum.FEMALE.value:
+            femaleLineAnyInfo = PartialUpdateOrGetOrPostMainRootUserSerializer(data=postTreeLineDTO)
             return create_male_of_female_line(uuid=self.kwargs['uuid'], lineInfo=femaleLineAnyInfo, model=FemaleLine)
 
-        if 'ж' in request.data.get('sex'):
-            maleLineAnyInfo = PartialUpdateOrGetOrPostMainRootUserSerializer(data=request.data)
+        if request.data.get('sex') == SexEnum.MALE.MALE:
+            maleLineAnyInfo = PartialUpdateOrGetOrPostMainRootUserSerializer(data=postTreeLineDTO)
             return create_male_of_female_line(uuid=self.kwargs['uuid'], lineInfo=maleLineAnyInfo, model=MaleLine)
+        return Response(status=HTTP_400_BAD_REQUEST)

@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from rest_framework import authentication, permissions
+from rest_framework import permissions
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 

@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 
 from authentication.models import UserAccount
-from userprofile.models import UserProfile
+from helpers.enums.status_enum import StatusEnum
 
 
 # Create your models here.
